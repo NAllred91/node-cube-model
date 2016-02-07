@@ -58,35 +58,10 @@ Cube.prototype.getTotalMovesSimplified = function()
 	return this._cubeModel.getMoves();
 };
 
-Cube.prototype[constants.ROTATECUBEBACK] = function()
+Cube.prototype.rotateCube = function(direction)
 {
-	this._currentOrientation = constants.ROTATECUBEBACKMAP[this._currentOrientation];
-};
-
-Cube.prototype[constants.ROTATECUBEFORWARD] = function()
-{
-	this._currentOrientation = constants.ROTATECUBEFORWARDMAP[this._currentOrientation];
-};
-
-Cube.prototype[constants.ROTATECUBECW] = function()
-{
-	this._currentOrientation = constants.ROTATECUBECWMAP[this._currentOrientation];
-};
-
-Cube.prototype[constants.ROTATECUBECCW] = function()
-{
-	this._currentOrientation = constants.ROTATECUBECCWMAP[this._currentOrientation];
-};
-
-Cube.prototype[constants.ROTATECUBELEFT] = function()
-{
-	this._currentOrientation = constants.ROTATECUBELEFTMAP[this._currentOrientation];
-};
-
-Cube.prototype[constants.ROTATECUBERIGHT] = function()
-{
-	this._currentOrientation = constants.ROTATECUBERIGHTMAP[this._currentOrientation];
-};
+	this._currentOrientation = constants.CUBEROTATIONMAPS[direction][this._currentOrientation];
+}
 
 Cube.prototype.rotateFace = function(face, direction)
 {
