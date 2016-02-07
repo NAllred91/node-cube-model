@@ -1,7 +1,12 @@
 {
   "name": "node-cube-model",
-  "version": "0.0.1",
+  "version": "0.1.1",
+  "author": "Nick Allred <NAllred91@gmail.com>",
   "dependencies": {
-    "underscore": "^1.8.3"
+    "underscore": "~1.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nallred91/node-cube-model.git"
   }
 }
