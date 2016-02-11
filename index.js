@@ -1,74 +1,71 @@
 'use strict';
 
-var constants = require('./constants'),
-	TOP = constants.TOP,
-	LEFT = constants.LEFT,
-	FRONT = constants.FRONT,
-	RIGHT = constants.RIGHT,
-	BACK = constants.BACK,
-	BOTTOM = constants.BOTTOM,
-	ORIENTATIONS = constants.ORIENTATIONS,
-	utility = require('./utility'),
+const 	constants = require('./constants'),
+		TOP = constants.TOP,
+		LEFT = constants.LEFT,
+		FRONT = constants.FRONT,
+		RIGHT = constants.RIGHT,
+		BACK = constants.BACK,
+		BOTTOM = constants.BOTTOM,
+		ORIENTATIONS = constants.ORIENTATIONS,
+		CW = constants.CW,
+		CCW = constants.CCW,
+		NOROTATE = constants.NOROTATE,
+		FLIP = constants.FLIP,
+		CUBEROTATIONMAPS = constants.CUBEROTATIONMAPS;
+
+var utility = require('./utility'),
 	_ = require('underscore'),
 	CubeModel = require('./CubeModel');
 
-var Cube = function(faces)
-{
-	this._cubeModel = new CubeModel(faces);
-	this._currentOrientation = 0;
-	this._moves = [];
-};
-
-Cube.prototype.getFacesArray = function()
-{
-	var faces = this._cubeModel.getFacesArray();
-	var modifiedFaces = [];
-	var orientationObject = ORIENTATIONS[this._currentOrientation];
-	_.each(orientationObject, function(newPositionPair, faceNumber)
-	{
-		modifiedFaces[faceNumber] = faces[newPositionPair[0]];
-
-		switch(newPositionPair[1])
+class Cube {
+	constructor(faces) {
+		this._cubeModel = new CubeModel(faces);
+		this._currentOrientation = 0;
+		this._moves = [];
+	}
+	getFacesArray() {
+		var faces = this._cubeModel.getFacesArray();
+		var modifiedFaces = [];
+		var orientationObject = ORIENTATIONS[this._currentOrientation];
+		_.each(orientationObject, function(newPositionPair, faceNumber)
 		{
-			case constants.NOROTATE:
-				// Nothing to do!
-				break;
-			case constants.CW:
-				modifiedFaces[faceNumber] = utility.rotateFaceCW(modifiedFaces[faceNumber]);
-				break;
-			case constants.CCW:
-				modifiedFaces[faceNumber] = utility.rotateFaceCCW(modifiedFaces[faceNumber]);
-				break;
-			case constants.FLIP:
-				modifiedFaces[faceNumber] = utility.rotateFace180(modifiedFaces[faceNumber]);
-				break;
-		}
-	});
+			modifiedFaces[faceNumber] = faces[newPositionPair[0]];
 
-	return modifiedFaces;
-};
+			switch(newPositionPair[1])
+			{
+				case NOROTATE:
+					// Nothing to do!
+					break;
+				case CW:
+					modifiedFaces[faceNumber] = utility.rotateFaceCW(modifiedFaces[faceNumber]);
+					break;
+				case CCW:
+					modifiedFaces[faceNumber] = utility.rotateFaceCCW(modifiedFaces[faceNumber]);
+					break;
+				case FLIP:
+					modifiedFaces[faceNumber] = utility.rotateFace180(modifiedFaces[faceNumber]);
+					break;
+			}
+		});
 
-Cube.prototype.getTotalMoves = function()
-{
-	return _.clone(this._moves);
-};
-
-Cube.prototype.getTotalMovesSimplified = function()
-{
-	return this._cubeModel.getMoves();
-};
-
-Cube.prototype.rotateCube = function(direction)
-{
-	this._currentOrientation = constants.CUBEROTATIONMAPS[direction][this._currentOrientation];
+		return modifiedFaces;
+	}
+	getTotalMoves() {
+		return _.clone(this._moves);
+	}
+	getTotalMovesSimplified() {
+		return this._cubeModel.getMoves();
+	}
+	rotateCube(direction) {
+		this._currentOrientation = CUBEROTATIONMAPS[direction][this._currentOrientation];
+	}
+	rotateFace(face, direction) {
+		var orientationPairs = ORIENTATIONS[this._currentOrientation];
+		var faceToRotate = orientationPairs[face][0];
+		this._cubeModel.rotateFace(faceToRotate, direction);
+	}
 }
-
-Cube.prototype.rotateFace = function(face, direction)
-{
-	var orientationPairs = ORIENTATIONS[this._currentOrientation];
-	var faceToRotate = orientationPairs[face][0];
-	this._cubeModel.rotateFace(faceToRotate, direction);
-};
 
 module.exports = {
 	create: function(input)
@@ -77,16 +74,16 @@ module.exports = {
 	},
 	constants: {
 		FACES: {
-			TOP: constants.TOP,
-			LEFT: constants.LEFT,
-			FRONT: constants.FRONT,
-			RIGHT: constants.RIGHT,
-			BACK: constants.BACK,
-			BOTTOM: constants.BOTTOM
+			TOP: TOP,
+			LEFT: LEFT,
+			FRONT: FRONT,
+			RIGHT: RIGHT,
+			BACK: BACK,
+			BOTTOM: BOTTOM
 		},
 		FACEROTATIONS: {
-			CW: constants.CW,
-			CCW: constants.CCW
+			CW: CW,
+			CCW: CCW
 		},
 		CUBEROTATIONS: {
 			FORWARD: constants.ROTATECUBEFORWARD,

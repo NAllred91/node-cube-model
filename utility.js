@@ -1,9 +1,9 @@
 'use strict';
 
-var constants = require('./constants');
-var cw = constants.FACEARRAYCW;
-var ccw = constants.FACEARRAYCCW;
-var flip = constants.FACEARRAY180;
+const 	constants = require('./constants'),
+		cw = constants.FACEARRAYCW,
+		ccw = constants.FACEARRAYCCW,
+		flip = constants.FACEARRAY180;
 
 var rotateFaceCW = function(face)
 {
