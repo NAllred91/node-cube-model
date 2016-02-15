@@ -16,7 +16,8 @@ const   constants = require('./constants'),
 
 var utility = require('./utility'),
     _ = require('underscore'),
-    CubeModel = require('./CubeModel');
+    CubeModel = require('./CubeModels/Cube'),
+    PieceModel = require('./CubeModels/Piece');
 
 class Cube {
     constructor(faces) {
@@ -24,16 +25,15 @@ class Cube {
         this._currentOrientation = 0;
         this._moves = [];
     }
+
     getFacesArray() {
         var faces = this._cubeModel.getFacesArray();
         var modifiedFaces = [];
         var orientationObject = ORIENTATIONS[this._currentOrientation];
-        _.each(orientationObject, function(newPositionPair, faceNumber)
-        {
+        _.each(orientationObject, function(newPositionPair, faceNumber) {
             modifiedFaces[faceNumber] = faces[newPositionPair[0]];
 
-            switch(newPositionPair[1])
-            {
+            switch(newPositionPair[1]) {
                 case NOROTATE:
                     // Nothing to do!
                     break;
@@ -51,15 +51,34 @@ class Cube {
 
         return modifiedFaces;
     }
+
     getTotalMoves() {
         return _.clone(this._moves);
     }
+
     getTotalMovesSimplified() {
         return this._cubeModel.getMoves();
     }
+
+    getPiece(faces) {
+        try {
+            return new PieceModel(this, faces);
+        }
+        catch(err) {
+            return undefined;
+        }
+    }
+
+    getFaceColor(face) {
+        // The center piece on a face
+        // is the color of the face.
+        return this.getFacesArray()[face][4];
+    }
+
     rotateCube(direction) {
         this._currentOrientation = CUBEROTATIONMAPS[direction][this._currentOrientation];
     }
+
     rotateFace(face, direction) {
         var orientationPairs = ORIENTATIONS[this._currentOrientation];
         var faceToRotate = orientationPairs[face][0];
@@ -68,8 +87,7 @@ class Cube {
 }
 
 module.exports = {
-    create: function(input)
-    {
+    create: function(input) {
         return new Cube(input);
     },
     constants: {
@@ -92,7 +110,6 @@ module.exports = {
             RIGHT: constants.ROTATECUBERIGHT,
             CW: constants.ROTATECUBECW,
             CCW: constants.ROTATECUBECCW
-        },
-        PIECELOCATIONS: constants.PIECELOCATIONS
+        }
     }
 };

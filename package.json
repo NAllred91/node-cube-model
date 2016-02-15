@@ -14,14 +14,9 @@
   },
   "readme": "# node-cube-model\n",
   "readmeFilename": "README.md",
-  "gitHead": "f2add0b34395cceb74a2bcc1be30dfc569671b91",
   "description": "",
   "bugs": {
     "url": "https://github.com/nallred91/node-cube-model/issues"
   },
-  "homepage": "https://github.com/nallred91/node-cube-model#readme",
-  "_id": "node-cube-model@0.1.1",
-  "scripts": {},
-  "_shasum": "71b7e7b4a994f4d08249a92f97eb9e94e85912e1",
-  "_from": "node-cube-model@*"
+  "homepage": "https://github.com/nallred91/node-cube-model#readme"
 }
