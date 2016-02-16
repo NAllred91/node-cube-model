@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /**
           top(0)
         ~~~~~~~~~
@@ -18,16 +18,10 @@
 
  *front(2)
  **/
-const constants = require('../constants'),
-    TOP = constants.TOP,
-    LEFT = constants.LEFT,
-    FRONT = constants.FRONT,
-    RIGHT = constants.RIGHT,
-    BACK = constants.BACK,
-    BOTTOM = constants.BOTTOM,
-    RELATIONS = constants.RELATIONS,
-    CW = constants.CW,
-    CCW = constants.CCW;
+const   constants = require('../constants'),
+        RELATIONS = constants.RELATIONS,
+        CW = constants.CW,
+        CCW = constants.CCW;
 
 var util = require('../utility'),
     _ = require('underscore');
@@ -69,7 +63,6 @@ class CubeModel {
     _rotateCounterClockWise(face) {
         var self = this;
         var thisFace = self._faces[face];
-        // TODO need comments, beware of reverse() modifying the original!
         var faceRelations = _.clone(RELATIONS[face]).reverse();
         this._faces[face] = util.rotateFaceCCW(thisFace);
         var previousValues = self._getFaceAdjacentcyPairValue(faceRelations[3]);
