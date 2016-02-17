@@ -60,12 +60,43 @@ class Cube {
         return this._cubeModel.getMoves();
     }
 
-    getPiece(faces) {
-        try {
-            return new PieceModel(this, faces);
+    getPieceByDestinationLocation(faces) {
+        var self = this;
+        // Get the colors of the destination.
+        var colors = _.map(faces, function(face) {
+            return self.getFaceColor(face);
+        }).sort();
+
+        var facesArray = self.getFacesArray();
+
+        // Find a pieceLocation that matches the colors.
+        var pieceLocation = _.find(constants.PIECELOCATIONS, function(possibleLocation) {
+            var thisLocationsColors = _.map(possibleLocation, function(facePositionPair) {
+                var face = facePositionPair[0];
+                var position = facePositionPair[1];
+                return facesArray[face][position];
+            }).sort();
+
+            return _.isEqual(colors, thisLocationsColors);
+        });
+
+        if(pieceLocation) {
+            return new PieceModel(this, pieceLocation);
         }
-        catch(err) {
-            return undefined;
+    }
+
+    getPieceByCurrentLocation(faces) {
+        faces = faces.sort();
+
+        // Get a pieceLocation for these faces.
+        var pieceLocation = _.find(constants.PIECELOCATIONS, function(possibleLocation) {
+            var thisLocationsFaces = _.pluck(possibleLocation, 0);
+
+            return _.isEqual(faces, thisLocationsFaces);
+        });
+
+        if(pieceLocation) {
+            return new PieceModel(this, pieceLocation);
         }
     }
 
@@ -73,6 +104,20 @@ class Cube {
         // The center piece on a face
         // is the color of the face.
         return this.getFacesArray()[face][4];
+    }
+
+    getFaceOfColor(color) {
+        var self = this,
+            facesArray = self.getFacesArray(),
+            face;
+        _.find(facesArray, function(faceArray, faceNumber) {
+            if(faceArray[4] === color) {
+                face = faceNumber;
+                return true;
+            }
+        });
+
+        return face;
     }
 
     rotateCube(direction) {
